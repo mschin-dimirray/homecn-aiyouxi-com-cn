@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mschin-dimirray.github.io/homecn-aiyouxi-com-cn/sitemap.xml
