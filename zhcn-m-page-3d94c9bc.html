@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记一次安静的回归 · 九游</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #faf8f5;
+            font-family: "Noto Serif SC", "Source Han Serif SC", "Times New Roman", serif;
+            color: #2c2b28;
+            line-height: 1.8;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-card {
+            max-width: 820px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03), 0 8px 32px rgba(0, 0, 0, 0.02);
+            padding: 3rem 2.5rem;
+            transition: all 0.2s ease;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.8rem; }
+            .page-card { padding: 1.8rem 1.2rem; border-radius: 16px; }
+        }
+
+        /* 节奏分隔 */
+        .opening {
+            font-size: 1.05rem;
+            color: #44413c;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #cbab7d;
+        }
+
+        .opening em {
+            font-style: normal;
+            color: #8b7355;
+            font-weight: 500;
+        }
+
+        .headline {
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #1f1e1b;
+            margin-bottom: 1.6rem;
+            line-height: 1.4;
+        }
+
+        .headline small {
+            display: block;
+            font-size: 1rem;
+            font-weight: 300;
+            color: #8a8278;
+            margin-top: 0.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .intro-text {
+            font-size: 1rem;
+            text-align: justify;
+            margin: 1.8rem 0 2.2rem 0;
+        }
+
+        .intro-text p {
+            margin-bottom: 1.4rem;
+        }
+
+        .intro-text a {
+            color: #7a5f3f;
+            text-decoration: none;
+            border-bottom: 1px solid #dacbb8;
+            padding-bottom: 0.05rem;
+            transition: border-color 0.2s;
+        }
+
+        .intro-text a:hover {
+            border-bottom-color: #7a5f3f;
+        }
+
+        .feature-quote {
+            background: #f6f2ec;
+            border-left: 4px solid #b59b7a;
+            padding: 1.2rem 1.6rem;
+            margin: 1.8rem 0 2.2rem 0;
+            border-radius: 0 12px 12px 0;
+            font-style: normal;
+            color: #3b3833;
+        }
+
+        .feature-quote p {
+            margin-bottom: 0.6rem;
+        }
+
+        .feature-quote p:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0 1.8rem 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        .feature-list li::before {
+            content: "—";
+            color: #b59b7a;
+            font-weight: 300;
+            flex-shrink: 0;
+            width: 1.2rem;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .subtle-note {
+            background: #fcf9f5;
+            border: 1px solid #e7ddd0;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 2.2rem 0 1.6rem 0;
+            font-size: 0.95rem;
+            color: #4f4a43;
+        }
+
+        .subtle-note strong {
+            font-weight: 500;
+            color: #6b5a44;
+        }
+
+        .closing {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e8dfd3;
+            font-size: 0.95rem;
+            color: #5e5951;
+            text-align: right;
+            font-style: normal;
+        }
+
+        .closing span {
+            display: inline-block;
+            background: #f1ede7;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: #6b5f51;
+        }
+
+        .faq-mini {
+            margin: 2rem 0 0.5rem 0;
+            padding: 1rem 1.4rem;
+            background: #f9f6f1;
+            border-radius: 16px;
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.6rem;
+        }
+
+        .faq-mini details:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-mini summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #3f3a33;
+            padding: 0.4rem 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-mini summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-mini summary::before {
+            content: "?";
+            display: inline-block;
+            width: 1.4rem;
+            height: 1.4rem;
+            background: #dccfc0;
+            color: #4e3f2e;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 0.8rem;
+            margin-right: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .faq-mini details[open] summary::before {
+            content: "›";
+            background: #b59b7a;
+            color: white;
+            line-height: 1.45rem;
+        }
+
+        .faq-mini .answer {
+            padding: 0.4rem 0 0.8rem 2rem;
+            font-size: 0.92rem;
+            color: #5b554c;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ece4da;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 480px) {
+            .headline { font-size: 1.6rem; }
+            .feature-quote { padding: 1rem 1.2rem; }
+            .faq-mini { padding: 0.8rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-card">
+
+    <div class="opening">
+        <em>✦ 有时只需要一个安静的入口</em>
+    </div>
+
+    <h1 class="headline">
+        再次打开那个页面<br>
+        <small>收藏夹里一个不起眼的书签，藏着一段熟悉的路径</small>
+    </h1>
+
+    <div class="intro-text">
+        <p>
+            翻看旧书签时，发现一个很久没有点开的名字。谈不上怀念，更像是一种确认——那个地址还在，页面依然干净，没有过多的弹窗或改版带来的陌生感。<a href="https://zhcn-m-jiuyou.com">九游</a>这个角落，几年下来竟保持着某种克制，内容更新了，但气息没变。
+        </p>
+        <p>
+            重新注册、登录、浏览，发现很多老栏目还在，新增的板块也不张扬。它不像一个急于留住你的平台，更像一个安静的聚落，等你什么时候想起，推门进去，一切如常。这种持续的存在感，反倒让人生出几分信任。
+        </p>
+    </div>
+
+    <div class="feature-quote">
+        <p>“收藏一个网站，有时候不是因为它的内容多惊艳，而是因为它总在那里，不急不慢。”</p>
+        <p style="text-align:right; font-size:0.9rem; color:#6f655a;">—— 某次深夜浏览后的随笔</p>
+    </div>
+
+    <ul class="feature-list">
+        <li>没有过度推荐，首页以列表和分类为主，把选择权交还给浏览者</li>
+        <li>社区板块保持适度的活跃，帖子和评论之间有一种老派的礼貌</li>
+        <li>游戏库按类型和热度排列，但不会用浮夸的横幅干扰阅读</li>
+        <li>个人收藏夹功能简洁，可以安静地整理自己关注的内容</li>
+        <li>偶尔会有站内信提示，语气克制，不像营销通知</li>
+    </ul>
+
+    <div class="subtle-note">
+        <strong>▎一点留意</strong><br>
+        再次访问时发现登录态依然有效，这一点让人意外又安心。如果你也曾在某个深夜注册过，不妨试试旧账号——很多早期的收藏和留言还在，像时间留下的便签。
+    </div>
+
+    <div class="faq-mini">
+        <details>
+            <summary>为什么选择再次收藏这个网站？</summary>
+            <div class="answer">因为它在众多同类站点中保持了一种稳定的节奏——不频繁改版、不强行推送、不丢失旧数据。这种连续性在当下并不多见。</div>
+        </details>
+        <details>
+            <summary>新访客需要注册才能浏览吗？</summary>
+            <div class="answer">大部分内容无需登录即可查看。注册主要为了收藏、评论和参与社区讨论，流程很简单，只需邮箱和用户名。</div>
+        </details>
+        <details>
+            <summary>移动端体验如何？</summary>
+            <div class="answer">页面适配做得不错，文字和按钮在手机上也清晰可点。没有独立的 App，但浏览器直接访问已经足够流畅。</div>
+        </details>
+    </div>
+
+    <hr>
+
+    <div style="font-size:0.95rem; color:#5f574e; margin-bottom: 1.2rem;">
+        <p style="margin-bottom:0.8rem;">
+            如果你也曾收藏过这个域名，或者只是偶然路过，不妨把它留在书签里。有些网址值得被记住，不需要特别的理由。<a href="https://zhcn-m-jiuyou.com" style="color:#7a5f3f; text-decoration: none; border-bottom: 1px solid #dacbb8;">九游</a>，一个不赶时间的角落。
+        </p>
+    </div>
+
+    <div class="closing">
+        <span>记于某个安静的傍晚</span>
+    </div>
+
+</div>
+</body>
+</html>
