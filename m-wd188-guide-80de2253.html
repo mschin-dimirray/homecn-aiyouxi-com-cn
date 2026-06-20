@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>wd188 · 收藏 & 持续关注</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f6fafc;
+            color: #1e2b3a;
+            line-height: 1.7;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* 网格卡片氛围 */
+        .card-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.75rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 40, 60, 0.04), 0 1px 3px rgba(0, 30, 50, 0.02);
+            border: 1px solid #dcebf2;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 80, 100, 0.06);
+        }
+
+        /* 蓝绿点缀 */
+        .accent {
+            color: #0b7b7b;
+        }
+
+        .accent-light {
+            background: #e0f2f0;
+            color: #0a5c5c;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .badge {
+            background: #cce8e5;
+            color: #0a5c5c;
+            border-radius: 40px;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+            color: #0d3b3b;
+        }
+
+        h1 small {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #5c7f8a;
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #134e4e;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1b4b4b;
+            margin-bottom: 0.4rem;
+        }
+
+        p {
+            margin-bottom: 0.9rem;
+            color: #2c4050;
+        }
+
+        .subtle {
+            color: #5a7482;
+            font-size: 0.9rem;
+        }
+
+        .flex-tag {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .flex-tag span {
+            background: #edf5f5;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #1a5f5f;
+            border: 1px solid #cde0e0;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 1.5px solid #0b7b7b;
+            color: #0b7b7b;
+            background: transparent;
+            padding: 0.4rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #0b7b7b;
+            color: white;
+        }
+
+        .link-embed {
+            color: #0b7b7b;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            text-decoration-color: #8fc7c7;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+
+        .link-embed:hover {
+            color: #064d4d;
+            text-decoration-color: #064d4d;
+        }
+
+        .faq-item {
+            border-bottom: 1px dashed #d2e4e8;
+            padding: 0.9rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: #154747;
+            margin-bottom: 0.2rem;
+        }
+
+        .faq-a {
+            color: #3e5a66;
+            font-size: 0.92rem;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: #3d6875;
+            margin-top: 0.2rem;
+            border-left: 3px solid #0b7b7b;
+            padding-left: 1rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, #cde0e0, transparent);
+            margin: 0.8rem 0 1.2rem 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 500px) {
+            body {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.25rem 1rem;
+            }
+        }
+
+        footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7897a3;
+            border-top: 1px solid #d0e3e8;
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HERO 区域 -->
+    <div class="card" style="margin-bottom:1.5rem; border-left:5px solid #0b7b7b;">
+        <span class="badge">· 再次访问 · 收藏 · 持续关注</span>
+        <h1>wd188 <small>常回来看看 · 一点即达</small></h1>
+        <div class="hero-sub">
+            一个温和的线上坐标，适合存为书签、偶尔回顾。<br>
+            不打扰，不渲染，只在你需要的时候出现。
+        </div>
+        <div style="margin-top: 1rem;">
+            <a href="https://m-wd188.com" class="link-embed" style="font-size:1.05rem;">wd188</a> 
+            <span class="subtle" style="margin-left:0.5rem;">· 保存至收藏夹，下次更快找到</span>
+        </div>
+    </div>
+
+    <!-- 网格卡片布局 -->
+    <div class="card-grid">
+
+        <!-- 摘要卡：它是怎样的存在 -->
+        <div class="card">
+            <h2><span class="accent">◈</span> 产品摘要</h2>
+            <p><strong>wd188</strong> 并非一个喧闹的平台，而是一个轻量的信息集合地。它没有复杂的注册流程，也没有反复推送的弹窗。你只需记住这个简洁的域名，或在浏览器收藏夹里留下一个位置。</p>
+            <p>无论你是第一次偶遇，还是已经来过几次，这里都保持一致的节奏——内容有序，更新克明，适合细看而非匆忙滑动。</p>
+            <div class="flex-tag">
+                <span>轻量信息</span>
+                <span>低干扰</span>
+                <span>适合收藏</span>
+            </div>
+        </div>
+
+        <!-- 亮点：为什么值得放进收藏夹 -->
+        <div class="card">
+            <h2><span class="accent">✦</span> 亮点 · 收藏的理由</h2>
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="margin-bottom: 0.6rem; display: flex; gap: 0.6rem;">
+                    <span style="color:#0b7b7b;">▸</span>
+                    <span><strong>清爽直达</strong> – 没有层层跳转，打开就能看到核心内容，适合碎片时间翻阅。</span>
+                </li>
+                <li style="margin-bottom: 0.6rem; display: flex; gap: 0.6rem;">
+                    <span style="color:#0b7b7b;">▸</span>
+                    <span><strong>节奏稳定</strong> – 信息更新有规律，不会突然“爆炸式”刷屏，适合长期关注。</span>
+                </li>
+                <li style="display: flex; gap: 0.6rem;">
+                    <span style="color:#0b7b7b;">▸</span>
+                    <span><strong>低认知负担</strong> – 界面清晰，减少视觉噪音，把注意力还给内容本身。</span>
+                </li>
+            </ul>
+            <div class="divider"></div>
+            <p class="subtle">如果你曾收藏过某个好用的工具站或信息页，那么 <a href="https://m-wd188.com" class="link-embed">wd188</a> 也会是同样顺手的存在。</p>
+        </div>
+
+        <!-- 使用建议：日常怎么用 -->
+        <div class="card">
+            <h2><span class="accent">↻</span> 使用建议 · 让关注更自然</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <div>
+                    <span class="accent-light">每周一次</span>
+                    <p style="margin: 0.3rem 0 0 0;">不必每日查看。把它放在书签栏的“闲暇阅读”文件夹里，周末或通勤时打开，节奏刚好。</p>
+                </div>
+                <div>
+                    <span class="accent-light">多端同步</span>
+                    <p style="margin: 0.3rem 0 0 0;">电脑与手机都可直接访问 <a href="https://m-wd188.com" class="link-embed">wd188</a>，登录同一浏览器账号即可同步收藏夹。</p>
+                </div>
+                <div>
+                    <span class="accent-light">分享给有同样兴趣的人</span>
+                    <p style="margin: 0.3rem 0 0 0;">如果你觉得这里的内容有价值，不妨把链接发给朋友，但不必推荐给所有人——适合的才是好的。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ 摘要 + 可信说明 -->
+        <div class="card">
+            <h2><span class="accent">⁇</span> 常见疑问 · 简单说明</h2>
+            <div class="faq-item">
+                <div class="faq-q">Q：这个网站需要注册或付费吗？</div>
+                <div class="faq-a">A：不需要注册，目前可直接访问，也没有隐藏付费项。保持简单。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q：内容多久更新一次？</div>
+                <div class="faq-a">A：没有固定时间表，但通常保持一段温和的更新节奏。建议隔一两周回来看看。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q：是否安全？会不会有恶意内容？</div>
+                <div class="faq-a">A：页面内容经过基本筛选，不包含恶意跳转或欺骗性信息。但仍建议你保持基本的网络安全意识，任何链接都不要盲目点击。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Q：我想收藏，但担心忘记这个地址。</div>
+                <div class="faq-a">A：现在就把 <a href="https://m-wd188.com" class="link-embed">wd188</a> 添加到浏览器书签（快捷键 Ctrl+D 或 Cmd+D），下次直接点击即可。</div>
+            </div>
+            <div style="margin-top: 0.6rem; font-size:0.85rem; color:#4b6f7c; background: #ebf4f4; padding: 0.6rem 1rem; border-radius: 40px;">
+                ⚆ 以上仅为客观说明，不构成任何承诺。请根据自己的判断决定是否使用。
+            </div>
+        </div>
+
+        <!-- 温和的再次访问邀请 -->
+        <div class="card" style="background: #e6f3f1; border-color: #b2d4d1;">
+            <p style="font-size: 1rem; font-weight: 500; color: #154747; margin-bottom: 0.5rem;">
+                ☕ 常回来坐坐
+            </p>
+            <p style="margin-bottom: 0.3rem;">
+                网址栏输入 <a href="https://m-wd188.com" class="link-embed" style="font-size:1.05rem;">wd188</a> 即可。<br>
+                或者打开你的收藏夹，点一下那个你亲手保存的名字。
+            </p>
+            <p class="subtle" style="margin-top: 0.2rem;">不催促，不打扰，你记得就好。</p>
+        </div>
+
+    </div><!-- card-grid end -->
+
+    <footer>
+        <div style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <span>· 持续关注 ·</span>
+            <span>· 非官方说明 ·</span>
+            <span>· 温和推荐 ·</span>
+        </div>
+        <p style="margin: 0;">仅供信息参考 · 使用前请自行判断 · 页面仅作介绍用途</p>
+    </footer>
+
+</div><!-- container end -->
+</body>
+</html>
