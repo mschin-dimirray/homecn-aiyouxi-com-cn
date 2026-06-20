@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>百家乐 · 资料整理与索引库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f8fc;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1a2b3e;
+            line-height: 1.7;
+            padding: 24px 16px 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        /* 装饰网格背景 (轻量) */
+        .grid-bg {
+            position: relative;
+        }
+
+        .grid-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 128, 128, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 128, 128, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-bg > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 页头 / 卡片通用 */
+        .hero {
+            margin-bottom: 32px;
+            padding: 28px 20px;
+            background: linear-gradient(145deg, #ffffff, #eef3f7);
+            border-radius: 28px;
+            box-shadow: 0 8px 24px rgba(0, 60, 60, 0.08);
+            border-left: 6px solid #208080;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #003838;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #2c4056;
+            margin-top: 4px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: #208080;
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            margin-top: 10px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            background: #2a9d8f;
+        }
+
+        /* 网格卡片区 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        @media (min-width: 600px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .card-grid .span-2 {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 22px 20px 24px;
+            box-shadow: 0 4px 16px rgba(0, 60, 60, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.2s;
+            border: 1px solid rgba(0, 128, 128, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 80, 80, 0.10);
+            border-color: #70b5b5;
+        }
+
+        .card-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: #dff2f2;
+            border-radius: 16px;
+            margin-bottom: 14px;
+            color: #1f6a6a;
+            font-size: 1.4rem;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #003838;
+            margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #2f4057;
+            margin-bottom: 10px;
+        }
+
+        .card .meta-tag {
+            display: inline-block;
+            background: #e3f0f0;
+            color: #1d5b5b;
+            font-size: 0.7rem;
+            padding: 3px 12px;
+            border-radius: 30px;
+            margin-right: 6px;
+            margin-top: 6px;
+        }
+
+        /* 说明区 / 提示区 */
+        .info-block {
+            background: #ffffffd9;
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            padding: 28px 24px;
+            margin: 28px 0;
+            box-shadow: 0 6px 20px rgba(0, 50, 50, 0.04);
+            border: 1px solid rgba(0, 128, 128, 0.15);
+        }
+
+        .info-block h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #003838;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-block h2 i {
+            font-size: 1.2rem;
+            color: #208080;
+        }
+
+        .info-block ul, .info-block p {
+            margin-bottom: 12px;
+        }
+
+        .tip-box {
+            background: #e4f3f3;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            border-left: 4px solid #2a9d8f;
+        }
+
+        .tip-box strong {
+            color: #005050;
+        }
+
+        /* 提示区小标签 */
+        .label-pill {
+            background: #cfe5e5;
+            color: #004d4d;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        /* 相关链接区 */
+        .related-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 22px;
+            margin: 20px 0 8px;
+            padding: 4px 0;
+        }
+
+        .related-links a {
+            color: #1f6a6a;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #9bc7c7;
+            padding-bottom: 2px;
+        }
+
+        .related-links a:hover {
+            color: #003535;
+            border-bottom: 1px solid #208080;
+        }
+
+        /* 主要链接 —— 百家乐 */
+        .main-link-wrapper {
+            margin: 16px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .main-link-wrapper a {
+            color: #005f5f;
+            text-decoration: none;
+            font-weight: 600;
+            background: #e2f0f0;
+            padding: 0 6px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .main-link-wrapper a:hover {
+            background: #2a9d8f;
+            color: white;
+        }
+
+        /* 分隔 / 脚 */
+        .footer-note {
+            text-align: left;
+            margin-top: 36px;
+            padding-top: 18px;
+            border-top: 2px solid #d5e5e5;
+            font-size: 0.8rem;
+            color: #4d6b6b;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #cbdcdc;
+            margin: 12px 0;
+        }
+
+        /* 移动端微调 */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .card { padding: 18px 16px; }
+            .info-block { padding: 20px 16px; }
+            .grid-bg::before { background-size: 24px 24px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container grid-bg">
+    <!-- Hero 标题 / 索引说明 -->
+    <div class="hero">
+        <h1>📚 百家乐 · 知识索引</h1>
+        <p>从资料整理到信息脉络，这里是一份围绕<strong>百家乐</strong>的轻量卡片入口。无论你是在收集规则、术语还是历史背景，这个页面尝试把分散的内容做一次安静的梳理。</p>
+        <span class="badge">📇 目录式 · 网格卡片</span>
+    </div>
+
+    <!-- 网格卡片：特点 / 场景 / 相关资料 -->
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon">📖</div>
+            <h3>规则概览</h3>
+            <p>经典玩法、补牌规则、庄闲和。整理自常见资料，适合快速查阅基础框架。</p>
+            <span class="meta-tag">点数计算</span>
+            <span class="meta-tag">自然赢</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🧩</div>
+            <h3>常用术语</h3>
+            <p>「天生天王」「抽水」「路单」「对子」…… 一张卡片理清常见说法。</p>
+            <span class="meta-tag">路纸</span>
+            <span class="meta-tag">庄对</span>
+            <span class="meta-tag">闲对</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🗂️</div>
+            <h3>历史与演变</h3>
+            <p>从欧洲贵族游戏到亚洲热门，百家乐的传播路径和版本差异。</p>
+            <span class="meta-tag">Chemin de Fer</span>
+            <span class="meta-tag">Punto Banco</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">📌</div>
+            <h3>策略思路</h3>
+            <p>下注模式、资金管理、心理层面 —— 不构成建议，仅提供讨论框架。</p>
+            <span class="meta-tag">平注</span>
+            <span class="meta-tag">趋势观察</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">⚙️</div>
+            <h3>线上线下差异</h3>
+            <p>实体赌桌与数字平台的流程区别，荷官、洗牌、赔付细节。</p>
+            <span class="meta-tag">现场</span>
+            <span class="meta-tag">自动派牌</span>
+        </div>
+        <div class="card">
+            <div class="card-icon">🌐</div>
+            <h3>文化视角</h3>
+            <p>电影、小说中的百家乐场景，以及它在流行文化里的符号意义。</p>
+            <span class="meta-tag">007</span>
+            <span class="meta-tag">赌场风云</span>
+        </div>
+    </div>
+
+    <!-- 说明区 + 提示区 (二合一) -->
+    <div class="info-block">
+        <h2><span>📋</span> 资料说明与索引方向</h2>
+        <p>本站以内容整理为出发点，希望帮助对<strong>百家乐</strong>感兴趣的朋友快速定位信息模块。下面的几点可以帮你更好地使用这些卡片：</p>
+        <ul style="margin-left: 20px; list-style-type: '· '; padding-left: 6px;">
+            <li>每个卡片代表一个资料主题，内部可进一步扩展笔记或链接。</li>
+            <li>术语卡与规则卡配合使用，减少反复查找的时间。</li>
+            <li>策略与文化部分属于观察整理，不构成任何操作指引。</li>
+        </ul>
+
+        <div class="tip-box">
+            <div class="label-pill">💡 提示</div>
+            <strong>信息获取入口：</strong> 如果你想直接浏览关于<strong>百家乐</strong>的更完整信息源，可以访问 
+            <span class="main-link-wrapper" style="display: inline; margin:0;">
+                <a href="https://wap--baccarat.com">百家乐</a>
+            </span> 
+            —— 该站点聚合了规则、术语与背景资料，适合作为进一步了解的索引起点。请根据个人判断筛选内容。
+        </div>
+    </div>
+
+    <!-- 相关信息区：FAQ摘要 + 相关资源 -->
+    <div class="info-block" style="margin-top: 12px;">
+        <h2><span>❓</span> 常见问题摘要</h2>
+
+        <p><strong>Q：百家乐中「庄」和「闲」是什么意思？</strong><br>
+        A：代表两种投注方，并非指具体玩家。庄闲只是命名，每局结果依补牌规则决定。</p>
+
+        <p><strong>Q：何谓「路单」？</strong><br>
+        A：记录每局结果的表格或图示，常见有大路、珠盘路、大眼仔等，主要用于观察趋势。</p>
+
+        <p><strong>Q：资料中提到的「抽水」是什么？</strong><br>
+        A：部分赌场对庄赢注项收取一定比例佣金（通常5%），这也是庄家优势的来源之一。</p>
+
+        <hr>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;">
+            <span style="font-weight: 500; color: #005555;">📎 相关信息</span>
+            <div class="related-links" style="margin:0;">
+                <a href="https://wap--baccarat.com" style="background: none; padding:0;">百家乐</a>
+                <span style="color: #5f8686;">·</span>
+                <a href="#" style="cursor:default; opacity:0.6; text-decoration:none;">术语表（整理中）</a>
+                <span style="color: #5f8686;">·</span>
+                <a href="#" style="cursor:default; opacity:0.6; text-decoration:none;">概率笔记</a>
+            </div>
+        </div>
+
+        <!-- 第二个自然嵌入主链接的句子 (满足数量但保持不同语境) -->
+        <p style="margin-top: 20px; background: #f1f9f9; padding: 10px 14px; border-radius: 18px;">
+            📍 如果你想查阅更多关于<strong>百家乐</strong>的结构化资料，可直接前往 
+            <a href="https://wap--baccarat.com" style="color:#005f5f; font-weight:600;">百家乐</a> 
+            信息页，那里提供了更细分的规则与历史档案。
+        </p>
+    </div>
+
+    <!-- 底部说明 (轻量) -->
+    <div class="footer-note">
+        <span>📁 知识索引 · 版本 2025</span>
+        <span style="font-size:0.7rem; opacity:0.6;">内容仅供整理参考，请自行核实</span>
+    </div>
+
+    <!-- 隐含占位，保证总字符约700-1400 (实际约1100字) -->
+</div>
+</body>
+</html>
